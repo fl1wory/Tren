@@ -1,8 +1,10 @@
 package db;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DbManager {
@@ -11,17 +13,31 @@ public class DbManager {
     private SQLiteDatabase db;
 
     public DbManager (Context context) {
-            this.context = context;
-            DbHelper = new DbHelper(context);
+        this.context = context;
+        DbHelper = new DbHelper(context);
     }
     public void openDb(){
         db = DbHelper.getWritableDatabase();
     }
-    public void insertToDb(String name, String description){
+    public void insertToDb(String name, String description) {
         ContentValues cv = new ContentValues();
         cv.put(CostantasDB.NAME, name);
         cv.put(CostantasDB.DESCRIPTION, description);
         db.insert(CostantasDB.TABLE_NAME, null, cv);
     }
-    public List<String> getFromDb();
+    public List<String> getFromDb(){
+        List<String> templist = new ArrayList<>();
+        Cursor cursor = db.query(CostantasDB.TABLE_NAME,
+                null, null,null,null,null,null);
+
+        while (cursor.moveToNext()){
+            String name = cursor.getString(cursor.getColumnIndex(CostantasDB.NAME));
+            templist.add(name);
+        }
+        cursor.close();
+        return templist;
+    }
+    public void closeDb(){
+        DbHelper.close();
+    }
 }

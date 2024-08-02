@@ -1,6 +1,9 @@
 package com.example.myapplication1;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -12,16 +15,23 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.myapplication1.databinding.ActivityMainBinding;
 
+import db.DbManager;
+
 public class MainActivity extends AppCompatActivity {
-
+    private DbManager dbManager;
+    private EditText edName, edDescription;
     private ActivityMainBinding binding;
-
+    private TextView tvTest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        dbManager = new DbManager(this);
+        edName = findViewById(R.id.edName);
+        edDescription = findViewById(R.id.edDescription);
+        tvTest = findViewById(R.id.tvTest);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -34,4 +44,27 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        for(String name : DbManager.getFromDb()){
+            tvTest.append(name);
+            tvTest.append("\n");
+        }
+        dbManager.openDb();
+    }
+
+    public void onClickSave(View view) {
+        dbManager.insertToDb(edName.getText().toString(), edDescription.getText().toString());
+        for(String name : DbManager.getFromDb()){
+            tvTest.append(name);
+            tvTest.append("\n");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbManager.closeDb();
+    }
 }
