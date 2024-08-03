@@ -1,19 +1,21 @@
 package com.example.myapplication1.db;
 
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
 public class DbHelper extends SQLiteOpenHelper {
-    public DbHelper(@Nullable Context context) {
+    public DbHelper(@Nullable Context context)
+    {
         super(context, CostantasDB.DB_NAME, null, CostantasDB.DB_VERSION);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
+    public void onCreate(SQLiteDatabase sqLiteDatabase)
+    {
         sqLiteDatabase.execSQL(CostantasDB.TABLE_STRUCTURE);
     }
 
@@ -22,5 +24,10 @@ public class DbHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(CostantasDB.DROP_TABLE);
         onCreate(sqLiteDatabase);
+    }
+
+    public SQLiteDatabase open() throws SQLException {
+
+        return SQLiteDatabase.openDatabase(CostantasDB.DB_PATH, null, SQLiteDatabase.OPEN_READWRITE);
     }
 }

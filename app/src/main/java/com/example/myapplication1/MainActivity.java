@@ -1,5 +1,6 @@
 package com.example.myapplication1;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText edName, edDescription;
     private ActivityMainBinding binding;
     private TextView tvTest;
+    public Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         dbManager = new DbManager(this);
+        context = this;
         edName = findViewById(R.id.edName);
         edDescription = findViewById(R.id.edDescription);
         tvTest = findViewById(R.id.tvTest);
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         dbManager.closeDb();
-
+        tvTest.setText(0);
     }
 }
 

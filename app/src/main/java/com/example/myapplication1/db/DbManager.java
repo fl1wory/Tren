@@ -14,9 +14,10 @@ public class DbManager {
 
     public DbManager (Context context) {
         this.context = context;
-        DbHelper = new DbHelper(context);
+        DbHelper = new DbHelper(this.context);
     }
-    public void openDb(){
+    public void openDb()
+    {
         db = DbHelper.getWritableDatabase();
     }
 
