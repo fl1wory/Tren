@@ -171,9 +171,12 @@
         app:layout_constraintVertical_bias="0.169">
 
         <LinearLayout
+            android:id="@+id/LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible"
+            tools:visibility="visible">
 
             <TableRow
                 android:id="@+id/prd0"
@@ -181,7 +184,9 @@
                 android:layout_height="match_parent"
                 android:alpha="1"
                 android:background="#23202A"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="visible"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="346dp"
@@ -198,7 +203,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="76dp"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <TextView

@@ -1,14 +1,6 @@
 <resources>
     <string name="app_name">MyApplication1</string>
-    <string name="title_home">Вправи</string>
-    <string name="exc1">Вправа 1</string>
-    <string name="exc2">Вправа 2</string>
-    <string name="exc3">Вправа 3</string>
-    <string name="exc4">Вправа 4</string>
-    <string name="exc5">Вправа 5</string>
-    <string name="exc6">Вправа 6</string>
-
-
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_home">Home</string>
 </resources>

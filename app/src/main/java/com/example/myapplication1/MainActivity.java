@@ -6,9 +6,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.myapplication1.databinding.FragmentNotificationsBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -17,6 +21,14 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.myapplication1.databinding.ActivityMainBinding;
 
 import com.example.myapplication1.db.DbManager;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity {
     private DbManager dbManager;
@@ -30,13 +42,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
         dbManager = new DbManager(this);
         context = this;
-        edName = findViewById(R.id.edName);
-        edDescription = findViewById(R.id.edDescription);
-        tvTest = findViewById(R.id.tvTest);
-
+        setContentView(binding.getRoot());
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
@@ -44,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
     }
 
     @Override
@@ -51,24 +60,17 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         dbManager.openDb();
         for(String name : dbManager.getFromDb()){
-            tvTest.append(name);
-            tvTest.append("\n");
+            //tvTest.append(name);
+            //tvTest.append("\n");
         }
     }
 
-    public void onClickSave(View view) {
-        dbManager.insertToDb(edName.getText().toString(), edDescription.getText().toString());
-        for(String name : dbManager.getFromDb()){
-            tvTest.append(name);
-            tvTest.append("\n");
-        }
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         dbManager.closeDb();
-        tvTest.setText(0);
+        //tvTest.setText(0);
     }
 }
 

@@ -25,9 +25,4 @@ public class DbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CostantasDB.DROP_TABLE);
         onCreate(sqLiteDatabase);
     }
-
-    public SQLiteDatabase open() throws SQLException {
-
-        return SQLiteDatabase.openDatabase(CostantasDB.DB_PATH, null, SQLiteDatabase.OPEN_READWRITE);
-    }
 }

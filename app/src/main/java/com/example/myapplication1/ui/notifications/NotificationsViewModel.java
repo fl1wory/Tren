@@ -18,21 +18,14 @@ import java.util.List;
 public class NotificationsViewModel extends ViewModel {
 
     private final MutableLiveData<String> proteinDataText;
-    private DbManager dbManager;
-    private Context context;
 
-    public NotificationsViewModel() {
-        dbManager = new DbManager();
+    public NotificationsViewModel()
+    {
         proteinDataText = new MutableLiveData<>();
     }
 
-    public LiveData<String> setProteinsText() {
-        dbManager.openDb();
-        List<Integer> proteins = dbManager.getFromDbProteins();
-        proteinDataText.setValue(String.valueOf(proteins));
-        dbManager.closeDb();
-
-
+    public LiveData<String> setProteinsText()
+    {
         return proteinDataText;
     }
 }

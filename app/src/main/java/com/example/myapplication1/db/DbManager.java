@@ -3,6 +3,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +20,15 @@ public class DbManager {
     public void openDb()
     {
         db = DbHelper.getWritableDatabase();
+        db.execSQL(CostantasDB.TABLE_STRUCTURE);
     }
 
-    public void insertToDb(String name, String description) {
+    public void insertToDb(String name, Integer protein, Integer fat, Integer carbohydrates) {
         ContentValues cv = new ContentValues();
         cv.put(CostantasDB.NAME, name);
-        cv.put(CostantasDB.DESCRIPTION, description);
+        cv.put(CostantasDB.PROTEIN, protein);
+        cv.put(CostantasDB.FAT, fat);
+        cv.put(CostantasDB.CARBOHYDRATES, carbohydrates);
         db.insert(CostantasDB.TABLE_NAME, null, cv);
     }
     public List<String> getFromDb(){
@@ -44,22 +48,29 @@ public class DbManager {
         return templist;
     }
 
-    public List<Integer> getFromDbProteins(){
+    public List<Integer> getFromDb(String columnName){
         List<Integer> templist = new ArrayList<>();
-        String columns[] = {Integer.toString(CostantasDB.PROTEIN), Integer.toString(CostantasDB.PROTEIN)};
-        Cursor cursor = db.query(CostantasDB.TABLE_NAME,
-                columns, null,null,null,null,null);
+        db = DbHelper.getReadableDatabase();
+        db.execSQL(CostantasDB.TABLE_STRUCTURE);
+        Cursor cursor = db.rawQuery("SELECT " + columnName + " FROM " + CostantasDB.TABLE_NAME, null);
 
-        int nameColumnIndex = cursor.getColumnIndex(Integer.toString(CostantasDB.PROTEIN));
-        if (nameColumnIndex >= 0) {
-            while (cursor.moveToNext()){
-                Integer proteins = cursor.getInt(nameColumnIndex);
-                templist.add(proteins);
-            }
+        int columnIndex = cursor.getColumnIndex(columnName);
+        System.out.println(columnIndex);
+
+        if (columnIndex >= 0 && cursor.moveToFirst()) {
+            do {
+                templist.add(cursor.getInt(columnIndex));
+                System.out.println(templist);
+            } while (cursor.moveToNext());
+        } else {
+            // Log an error message or throw an exception if the cursor is empty
+            Log.e("Database", "Cursor is empty");
         }
+
         cursor.close();
         return templist;
     }
+
 
 
 
